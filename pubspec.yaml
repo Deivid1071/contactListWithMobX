@@ -40,6 +40,8 @@ dev_dependencies:
     sdk: flutter
   mobx_codegen: ^1.1.0+1
   build_runner: ^1.10.0
+  url_launcher: ^5.5.0
+  image_picker: ^0.6.7+4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

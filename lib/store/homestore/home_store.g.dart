@@ -9,38 +9,27 @@ part of 'home_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$HomeStore on _HomeStore, Store {
-  final _$contactsAtom = Atom(name: '_HomeStore.contacts');
+  final _$setListContactsAsyncAction =
+      AsyncAction('_HomeStore.setListContacts');
 
   @override
-  List<Contact> get contacts {
-    _$contactsAtom.reportRead();
-    return super.contacts;
+  Future<void> setListContacts() {
+    return _$setListContactsAsyncAction.run(() => super.setListContacts());
   }
 
-  @override
-  set contacts(List<Contact> value) {
-    _$contactsAtom.reportWrite(value, super.contacts, () {
-      super.contacts = value;
-    });
-  }
-
-  final _$_HomeStoreActionController = ActionController(name: '_HomeStore');
+  final _$showContactPageAsyncAction =
+      AsyncAction('_HomeStore.showContactPage');
 
   @override
-  void setListContacts(List<Contact> value) {
-    final _$actionInfo = _$_HomeStoreActionController.startAction(
-        name: '_HomeStore.setListContacts');
-    try {
-      return super.setListContacts(value);
-    } finally {
-      _$_HomeStoreActionController.endAction(_$actionInfo);
-    }
+  Future<void> showContactPage({Contact contact, dynamic context}) {
+    return _$showContactPageAsyncAction
+        .run(() => super.showContactPage(contact: contact, context: context));
   }
 
   @override
   String toString() {
     return '''
-contacts: ${contacts}
+
     ''';
   }
 }

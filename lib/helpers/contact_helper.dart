@@ -99,7 +99,7 @@ class Contact {
   String phone;
   String image;
 
-  Contact();
+  Contact({this.id,this.name,this.image,this.phone,this.email});
 
   Contact.fromMap(Map map) {
     id = map[idColumn];

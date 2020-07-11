@@ -1,5 +1,5 @@
-import 'dart:io';
 
+import 'dart:io';
 import 'package:contactlistmobx/helpers/contact_helper.dart';
 import 'package:contactlistmobx/store/homestore/home_store.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,13 +12,12 @@ class HomePageScreen extends StatefulWidget {
 }
 
 class _HomePageScreenState extends State<HomePageScreen> {
-  ContactHelper helper = ContactHelper();
   HomeStore homeStore = HomeStore();
-  List<Contact> contacts = List();
+
 
   @override
   void initState() {
-    helper.getAllContacts().then((list) => homeStore.setListContacts(list));
+    homeStore.setListContacts();
     super.initState();
   }
 
@@ -30,10 +29,20 @@ class _HomePageScreenState extends State<HomePageScreen> {
             title: Text('Contatos'),
             backgroundColor: Colors.red,
             centerTitle: true,
+            actions: <Widget>[
+              PopupMenuButton(itemBuilder: (context) => <PopupMenuEntry< dynamic >>[
+                const PopupMenuItem( child: Text('Odernar de A-Z'), value: 0, ),
+                const PopupMenuItem( child: Text('Odernar de Z-A'), value: 1, )
+              ],
+              onSelected: homeStore.orderList,
+              )
+            ],
           ),
           backgroundColor: Colors.white,
           floatingActionButton: FloatingActionButton(
-            onPressed: () {},
+            onPressed: (){
+              homeStore.showContactPage(context: context);
+            },
             child: Icon(Icons.add),
             backgroundColor: Colors.red,
           ),
@@ -44,16 +53,19 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   itemCount: homeStore.contacts.length,
                   itemBuilder: (context, index) {
                    Contact contact = homeStore.contacts[index];
-                    return _contactCard(contact);
+                    return _contactCard(contact, index);
                   });
             },
           )),
     );
   }
 
-  Widget _contactCard(Contact contact) {
+  Widget _contactCard(Contact contact, int index) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        print(contact);
+        homeStore.showOptions(contact, context, index);
+      },
       child: Card(
         child: Padding(
           padding: EdgeInsets.all(10),
@@ -65,9 +77,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: contact.image != null
+                    image: contact.image != null && contact.image != ''
                         ? FileImage(File(contact.image))
-                        : Image.asset('images/person.png'),
+                        : AssetImage('images/person.png'),
                   ),
                 ),
               ),
@@ -100,4 +112,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
       ),
     );
   }
+
+
 }
